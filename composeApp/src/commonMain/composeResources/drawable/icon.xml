@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="375dp"
+    android:height="375dp"
+    android:viewportWidth="375"
+    android:viewportHeight="375">
+
+  <!-- Main rounded rectangle with gradient background -->
+  <path
+      android:pathData="M50,104.207C50,72.175 75.968,46.207 108,46.207H266.842C298.875,46.207 324.842,72.175 324.842,104.207V263.049C324.842,295.082 298.875,321.049 266.842,321.049H108C75.968,321.049 50,295.082 50,263.049V104.207Z">
+    <aapt:attr name="android:fillColor">
+      <gradient
+          android:type="linear"
+          android:startX="50"
+          android:startY="46.207"
+          android:endX="324.842"
+          android:endY="321.049">
+        <item android:offset="0" android:color="#FFCD514B"/>
+        <item android:offset="1" android:color="#E83227"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+
+  <!-- Inner rounded rectangle -->
+  <path
+      android:fillColor="#FFD9D9D9"
+      android:pathData="M118.716,183.506C118.716,160.582 118.716,149.12 125.746,142.09C132.775,135.061 144.089,135.061 166.716,135.061H207.428C230.056,135.061 241.369,135.061 248.399,142.09C255.428,149.12 255.428,160.582 255.428,183.506C255.428,206.43 255.428,217.892 248.399,224.921C241.369,231.951 230.056,231.951 207.428,231.951H166.716C144.089,231.951 132.775,231.951 125.746,224.921C118.716,217.892 118.716,206.43 118.716,183.506Z"/>
+
+</vector>
