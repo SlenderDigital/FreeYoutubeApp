@@ -2,11 +2,9 @@ package org.free.youtube.ui
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// Theme Colors for YouTube Downloader - Minimalistic Modern Design
 object YouTubeDownloaderTheme {
 
     // Primary Colors
@@ -94,6 +92,7 @@ object YouTubeDownloaderTheme {
         errorContainer = Color(0xFF93000A),
         onErrorContainer = Color(0xFFFFDAD6)
     )
+
 }
 
 @Composable

@@ -3,6 +3,7 @@ package org.free.youtube
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,13 +30,13 @@ import org.free.youtube.utils.shadowWithClipIntersect
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    YouTubeDownloaderTheme {
         LazyColumn(
             modifier = Modifier
                 .background(YouTubeDownloaderTheme.BackgroundGradient)
                 .safeContentPadding()
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
 
@@ -56,15 +57,15 @@ fun App() {
                     )
             }
             item {
-                Column( horizontalAlignment = Alignment.CenterHorizontally) {
+                Row( horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = "YouTube",
-                        style = MaterialTheme.typography.displayMedium,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = Color.White,
                     )
                     Text(
                         text = "Downloader",
-                        style = MaterialTheme.typography.displayMedium,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = YouTubeDownloaderTheme.RedPrimary,
                     )
                 }
@@ -90,7 +91,9 @@ fun App() {
                     )
             }
             item {
-                DownloadOptionsHeader()
+                Column (horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()) {
+                    DownloadOptionsHeader(modifier = Modifier.padding(top = 16.dp))
+                }
             }
         }
     }
