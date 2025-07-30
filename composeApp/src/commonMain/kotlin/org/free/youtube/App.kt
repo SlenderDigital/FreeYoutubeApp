@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import freeyoutube.composeapp.generated.resources.Res
 import freeyoutube.composeapp.generated.resources.icon
+import io.ktor.sse.SPACE
 import org.free.youtube.ui.DownloadOptionsHeader
 import org.free.youtube.ui.Header
 import org.free.youtube.ui.VideoPrevisualizer
@@ -38,7 +39,7 @@ fun App() {
                 .padding(horizontal = 16.dp, vertical = 32.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
 
         ) {
             item {
@@ -69,7 +70,6 @@ fun App() {
                     text = "Download your favorite videos with ease",
                     style = MaterialTheme.typography.bodyLarge,
                     color = YouTubeDownloaderTheme.TextSecondary,
-                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
             item {

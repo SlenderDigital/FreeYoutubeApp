@@ -10,14 +10,19 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,20 +57,19 @@ fun VideoPrevisualizer(modifier: Modifier) {
             fadeOut(targetAlpha = 0.3f)
 
     Column(
-        modifier = modifier.padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.SpaceAround,
+        modifier = modifier.padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
         ) {
             UrlField(
                 url = ytURL,
                 onYtURLChange = { ytURL = it },
-                modifier = Modifier
-                    .weight(1f)
+                modifier = Modifier.weight(1f)
             )
 
             AnimatedVisibility(
@@ -73,57 +77,80 @@ fun VideoPrevisualizer(modifier: Modifier) {
                 enter = customEnterTransition,
                 exit = customExitTransition
             ) {
-                Icon (
-                    painter = painterResource(Res.drawable.trash),
-                    contentDescription = "Delete",
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(48.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.Transparent)
-                        .clickable(enabled = true, onClick = { ytURL = "" })
-                        .padding(start = 8.dp),
-                    tint = YouTubeDownloaderTheme.RedPrimary
-                )
+                        .background(YouTubeDownloaderTheme.BackgroundTertiary)
+                        .clickable(enabled = true, onClick = { ytURL = "" }),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.trash),
+                        contentDescription = "Delete",
+                        modifier = Modifier.size(20.dp),
+                        tint = YouTubeDownloaderTheme.RedPrimary
+                    )
+                }
             }
         }
+
         AnimatedVisibility(
-            visible = ytURL.isYouTubeUrl(),
-            modifier = Modifier.height(90.dp)
+            visible = ytURL.isYouTubeUrl()
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = YouTubeDownloaderTheme.BackgroundTertiary
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                val videoId: String? =
-                    ytURL.extractYouTubeVideoId()
-                val thumbnailUrl = "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
-
-                AsyncImage( // Video Image
-                    model = thumbnailUrl,
-                    contentDescription = "Video thumbnail",
+                Row(
                     modifier = Modifier
-                        .width(120.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(start = 8.dp),
-                    verticalArrangement = Arrangement.SpaceAround,
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    val videoId: String? = ytURL.extractYouTubeVideoId()
+                    val thumbnailUrl = "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
 
+                    AsyncImage(
+                        model = thumbnailUrl,
+                        contentDescription = "Video thumbnail",
+                        modifier = Modifier
+                            .width(140.dp)
+                            .height(78.dp)
+                            .clip(RoundedCornerShape(12.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
+                        verticalArrangement = Arrangement.SpaceEvenly
                     ) {
-                    Text(
-                        text = "9 DaVinci Resolve Tricks You Wish You Knew Sooner!",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = YouTubeDownloaderTheme.TextPrimary,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        text = "00:15:11 - 45/206MB",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = YouTubeDownloaderTheme.TextSecondary
-                    )
+                        Text(
+                            text = "9 DaVinci Resolve Tricks You Wish You Knew Sooner!",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = YouTubeDownloaderTheme.TextPrimary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            lineHeight = MaterialTheme.typography.titleMedium.lineHeight
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "00:15:11 - 45/206MB",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = YouTubeDownloaderTheme.TextSecondary
+                        )
+                    }
                 }
             }
         }

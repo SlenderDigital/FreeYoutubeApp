@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -42,9 +44,8 @@ fun ResolutionSelector(
         modifier = modifier,
         contentAlignment = Alignment.TopEnd
     ) {
-
         var expanded by remember { mutableStateOf(false) }
-        var resolutionSelected by remember { mutableStateOf("1080p")}
+        var resolutionSelected by remember { mutableStateOf("1080p") }
 
         Button(
             onClick = { expanded = !expanded },
@@ -59,9 +60,16 @@ fun ResolutionSelector(
                 disabledContainerColor = YouTubeDownloaderTheme.BackgroundTertiary,
                 disabledContentColor = YouTubeDownloaderTheme.TextMuted
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp), // Better touch target height
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp) // Better internal padding
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = resolutionSelected,
                 )
@@ -70,21 +78,20 @@ fun ResolutionSelector(
                     contentDescription = "Arrow",
                     modifier = Modifier
                         .rotate(if (expanded) 180f else 0f)
-                        .wrapContentWidth()
-                        .size(20.dp)
+                        .size(18.dp) // Slightly larger for better visibility
                 )
             }
         }
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { },
+            onDismissRequest = { expanded = false }, // Close when clicking outside
             border = BorderStroke(width = 1.dp, color = YouTubeDownloaderTheme.BorderDefault),
             shape = YouTubeDownloaderTheme.Shapes.medium,
             containerColor = YouTubeDownloaderTheme.BackgroundTertiary,
             modifier = Modifier.width(IntrinsicSize.Min),
-            tonalElevation = 10.dp,
-            offset = DpOffset(x = 0.dp, y = 0.dp),
+            tonalElevation = 8.dp, // Better elevation for depth
+            offset = DpOffset(x = 0.dp, y = 4.dp), // Small offset for better visual separation
             properties = PopupProperties()
         ) {
             content.forEach { resolution ->
@@ -92,7 +99,7 @@ fun ResolutionSelector(
                     text = {
                         Text(
                             text = resolution,
-                            modifier = Modifier.wrapContentWidth() // Fit text content
+                            modifier = Modifier.wrapContentWidth()
                         )
                     },
                     colors = MenuItemColors(
@@ -108,8 +115,8 @@ fun ResolutionSelector(
                         expanded = false
                         resolutionSelected = resolution
                     },
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp), // Adjusted padding for better fit
-                    modifier = Modifier.width(70.dp)
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp), // Better padding
+                    modifier = Modifier.width(80.dp) // Slightly wider for better appearance
                 )
             }
         }

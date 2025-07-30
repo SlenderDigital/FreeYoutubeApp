@@ -53,7 +53,7 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
             LeadingIcon(
                 painter = painterResource(Res.drawable.settings),
                 description = "Settings",
-                modifier = Modifier
+                modifier = Modifier.size(24.dp)
             )
             Text(
                 text = "Download Options",
