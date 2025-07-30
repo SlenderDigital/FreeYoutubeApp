@@ -3,7 +3,6 @@ package org.free.youtube.ui
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,20 +18,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UrlField(modifier: Modifier = Modifier) {
-    var value by remember { mutableStateOf("") }
+fun UrlField(
+    modifier: Modifier = Modifier,
+    url: String,
+    onYtURLChange: (String) -> Unit,
+) {
     var isFocused by remember { mutableStateOf(false) }
 
     TextField(
-        value = value,
-        onValueChange = { value = it },
+        value = url,
+        onValueChange = { newValue ->
+            onYtURLChange(newValue)
+        },
         placeholder = {
             Text(
                 "Paste YouTube URL here...",
                 color = YouTubeDownloaderTheme.TextMuted
             )
         },
-        shape = RoundedCornerShape(12.dp),
+        shape = YouTubeDownloaderTheme.Shapes.medium,
         textStyle = MaterialTheme.typography.bodyMedium.copy(
             color = YouTubeDownloaderTheme.TextPrimary
         ),
@@ -54,7 +58,7 @@ fun UrlField(modifier: Modifier = Modifier) {
             .border(
                 width = 1.dp,
                 color = if (isFocused) YouTubeDownloaderTheme.RedPrimary else YouTubeDownloaderTheme.BorderSubtle,
-                shape = RoundedCornerShape(12.dp)
+                shape = YouTubeDownloaderTheme.Shapes.medium
             )
             .onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
