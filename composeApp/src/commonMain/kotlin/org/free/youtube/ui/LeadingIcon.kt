@@ -13,6 +13,6 @@ fun LeadingIcon(painter: Painter, description: String, modifier: Modifier) {
         painter = painter,
         contentDescription = description,
         tint = YouTubeDownloaderTheme.RedPrimary,
-        modifier = modifier.size(20.dp)
+        modifier = modifier
     )
 }
