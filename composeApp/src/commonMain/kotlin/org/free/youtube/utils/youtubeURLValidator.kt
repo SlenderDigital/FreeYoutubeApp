@@ -48,8 +48,14 @@ object YouTubeUrlValidator {
 
         compiledPatterns.forEach { regex ->
             val matchResult = regex.find(trimmedUrl)
-            if (matchResult != null && matchResult.groupValues.size >= 3) {
-                return matchResult.groupValues[2] // Video ID is usually in the second group
+            if (matchResult != null) {
+                // Find the first non-empty group that contains the video ID
+                for (i in 1 until matchResult.groupValues.size) {
+                    val group = matchResult.groupValues[i]
+                    if (group.isNotEmpty() && group.matches(Regex("[a-zA-Z0-9_-]{11}"))) {
+                        return group
+                    }
+                }
             }
         }
 

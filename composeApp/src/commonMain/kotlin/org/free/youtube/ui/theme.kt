@@ -1,12 +1,12 @@
 package org.free.youtube.ui
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 
-// Theme Colors for YouTube Downloader - Minimalistic Modern Design
 object YouTubeDownloaderTheme {
 
     // Primary Colors
@@ -34,6 +34,7 @@ object YouTubeDownloaderTheme {
     val TextPrimary = Color(0xFFFFFFFF)        // white
     val TextSecondary = Color(0xFF9CA3AF)      // gray-400
     val TextTertiary = Color(0xFFD1D5DB)       // gray-300
+    val TextInverted = Color(0xFF000000)         // black
     val TextMuted = Color(0xFF6B7280)          // gray-500
 
     // Status Colors
@@ -94,7 +95,34 @@ object YouTubeDownloaderTheme {
         errorContainer = Color(0xFF93000A),
         onErrorContainer = Color(0xFFFFDAD6)
     )
+
+    // Material3 Shapes
+    val Shapes = Shapes(
+        small = RoundedCornerShape(8.dp),
+        medium = RoundedCornerShape(12.dp),
+        large = RoundedCornerShape(16.dp)
+    )
+
+    // Button Theme
+    val ButtonDeactivated = ButtonColors(
+        containerColor = BackgroundTertiary,
+        contentColor = TextPrimary,
+        disabledContainerColor = BackgroundTertiary,
+        disabledContentColor = TextMuted
+    )
+
+    val ButtonActivated = ButtonColors(
+        containerColor = RedPrimary,
+        contentColor = TextInverted,
+        disabledContentColor = BackgroundTertiary,
+        disabledContainerColor = TextMuted
+
+    )
+
+
 }
+
+
 
 @Composable
 fun YouTubeDownloaderTheme(
@@ -102,6 +130,7 @@ fun YouTubeDownloaderTheme(
 ) {
     MaterialTheme(
         colorScheme = YouTubeDownloaderTheme.DarkColorScheme,
+        shapes = YouTubeDownloaderTheme.Shapes,
         content = content
     )
 }

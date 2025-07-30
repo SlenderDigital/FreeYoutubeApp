@@ -33,6 +33,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            // Ktor client dependency required for Coil
+            implementation(libs.ktor.client.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -44,11 +46,24 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(compose.components.resources)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
 
+        }
+        iosMain.dependencies {
+            // Ktor client dependency required for iOS
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
+        // alternatively jvmMain (maybe later)
+//        desktopMain.dependencies {
+//            // Ktor client dependency required for JVM/Desktop
+//            implementation(libs.ktor.client.java)
+//            implementation(libs.kotlinx.coroutines.swing)
+//        }
     }
 }
 
