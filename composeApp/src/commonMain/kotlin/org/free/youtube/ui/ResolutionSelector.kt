@@ -60,9 +60,8 @@ fun ResolutionSelector(
                 disabledContainerColor = YouTubeDownloaderTheme.BackgroundTertiary,
                 disabledContentColor = YouTubeDownloaderTheme.TextMuted
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp), // Better touch target height
+            modifier = modifier
+                .height(48.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp) // Better internal padding
         ) {
             Row(
