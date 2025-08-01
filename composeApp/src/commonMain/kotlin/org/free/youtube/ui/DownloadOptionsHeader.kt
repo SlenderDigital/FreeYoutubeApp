@@ -73,6 +73,7 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.titleSmall,
                     color = YouTubeDownloaderTheme.TextSecondary,
                     fontSize = 14.sp,
+                    modifier = modifier.padding(bottom = 4.dp)
                 )
                 val resolutions = listOf("2160p", "1080p", "720p", "480p")
 
@@ -83,18 +84,17 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                 )
             }
 
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .fillMaxWidth(0.25f)
             ) {
                 Text(
                     text = "Audio",
                     style = MaterialTheme.typography.titleSmall,
                     color = YouTubeDownloaderTheme.TextSecondary,
                     fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Button(
                     onClick = {
@@ -103,7 +103,9 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                             else -> YouTubeDownloaderTheme.ButtonDeactivated
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(48.dp),
                     shape = YouTubeDownloaderTheme.Shapes.medium,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = animatedBackgroundColor,
@@ -112,13 +114,14 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                     border = BorderStroke(
                         width = 1.dp,
                         color = YouTubeDownloaderTheme.BorderDefault
-                    )
+                    ),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.audio),
                         contentDescription = "Audio Icon",
-                        modifier = Modifier.size(16.dp),
-                        tint = YouTubeDownloaderTheme.TextPrimary
+                        modifier = Modifier.size(20.dp), // Icon size
+                        tint = animatedContentColor
                     )
                 }
             }

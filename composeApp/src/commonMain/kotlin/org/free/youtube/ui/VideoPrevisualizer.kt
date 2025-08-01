@@ -46,7 +46,7 @@ import org.free.youtube.utils.isYouTubeUrl
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun VideoPrevisualizer(modifier: Modifier) { // Its a preview
+fun VideoPrevisualizer(modifier: Modifier) {
     var ytURL by remember { mutableStateOf("") }
     val customEnterTransition = scaleIn(initialScale = 0.8f) +
             expandHorizontally(expandFrom = Alignment.End) +
