@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -57,7 +56,7 @@ fun VideoPrevisualizer(modifier: Modifier) {
             fadeOut(targetAlpha = 0.3f)
 
     Column(
-        modifier = modifier.padding(vertical = 8.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,10 +65,11 @@ fun VideoPrevisualizer(modifier: Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            UrlField(
-                url = ytURL,
-                onYtURLChange = { ytURL = it },
-                modifier = Modifier.weight(1f)
+            Field(
+                fieldValue = ytURL,
+                onFieldChange = { ytURL = it },
+                modifier = Modifier.weight(1f),
+                placeholder = "Paste YouTube URL here..."
             )
 
             AnimatedVisibility(

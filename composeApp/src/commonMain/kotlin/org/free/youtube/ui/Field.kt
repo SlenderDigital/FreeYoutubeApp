@@ -18,21 +18,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UrlField(
+fun Field(
     modifier: Modifier = Modifier,
-    url: String,
-    onYtURLChange: (String) -> Unit,
+    fieldValue: String,
+    onFieldChange: (String) -> Unit,
+    placeholder: String = "Paste YouTube URL here..."
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
     TextField(
-        value = url,
+        value = fieldValue,
         onValueChange = { newValue ->
-            onYtURLChange(newValue)
+            onFieldChange(newValue)
         },
         placeholder = {
             Text(
-                "Paste YouTube URL here...",
+                placeholder,
                 color = YouTubeDownloaderTheme.TextMuted
             )
         },
@@ -54,10 +55,9 @@ fun UrlField(
         singleLine = true,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
             .border(
                 width = 1.dp,
-                color = if (isFocused) YouTubeDownloaderTheme.RedPrimary else YouTubeDownloaderTheme.BorderSubtle,
+                color = if (isFocused) YouTubeDownloaderTheme.BorderFocus else YouTubeDownloaderTheme.BorderSubtle,
                 shape = YouTubeDownloaderTheme.Shapes.medium
             )
             .onFocusChanged { focusState ->

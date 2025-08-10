@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -35,6 +34,10 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             // Ktor client dependency required for Coil
             implementation(libs.ktor.client.android)
+            // Ktor client dependency required for YouTube-dl Boom
+            implementation("io.github.farimarwat:youtubedl-boom:1.0.21")
+            implementation("io.github.farimarwat:youtubedl-boom-commons:1.2")
+            implementation("com.jakewharton.timber:timber:latest_version") // Replace with the latest Timber version
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -84,8 +87,13 @@ android {
         }
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        release { // Proguard rules for release build
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro" // Your custom rules file
+            )
         }
     }
     compileOptions {
