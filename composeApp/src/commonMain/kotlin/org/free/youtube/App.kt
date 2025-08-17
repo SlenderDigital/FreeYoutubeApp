@@ -1,5 +1,6 @@
 package org.free.youtube
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,9 +50,8 @@ fun App() {
         LazyColumn(
             modifier = Modifier
                 .background(YouTubeDownloaderTheme.BackgroundGradient)
+                .safeContentPadding()
                 .padding(horizontal = 16.dp)
-                .statusBarsPadding()
-                .navigationBarsPadding()
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -97,8 +98,6 @@ fun App() {
             }
             item {
                 DownloadButton()
-            }
-            item {
             }
         }
     }

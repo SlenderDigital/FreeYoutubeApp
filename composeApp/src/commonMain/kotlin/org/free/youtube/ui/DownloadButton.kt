@@ -54,14 +54,6 @@ fun DownloadButton() {
         )
     )
 
-    val borderColor by animateColorAsState(
-        targetValue = if (isAnimating) YouTubeDownloaderTheme.BorderFocus else YouTubeDownloaderTheme.BorderDefault,
-        animationSpec = tween(
-            durationMillis = if (isAnimating) 150 else 300,
-            easing = FastOutSlowInEasing
-        )
-    )
-
     Button(
         onClick = {
             // Trigger the animation

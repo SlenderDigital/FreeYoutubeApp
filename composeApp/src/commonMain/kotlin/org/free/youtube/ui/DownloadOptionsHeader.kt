@@ -2,6 +2,7 @@ package org.free.youtube.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -24,27 +25,26 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
-    var buttonTheme by remember { mutableStateOf(YouTubeDownloaderTheme.ButtonDeactivated) }
     var isAudioEnabled by remember { mutableStateOf(true) }
-    var isTitleEnabled by remember { mutableStateOf(false)}
+    var isTitleEnabled by remember { mutableStateOf(false) }
 
+// Determine current theme based on audio enabled state
+    val currentButtonTheme = if (isAudioEnabled) {
+        YouTubeDownloaderTheme.ButtonActivated
+    } else {
+        YouTubeDownloaderTheme.ButtonDeactivated
+    }
+
+// Animated colors
     val animatedBackgroundColor by animateColorAsState(
-        targetValue = if (buttonTheme == YouTubeDownloaderTheme.ButtonActivated) {
-            YouTubeDownloaderTheme.ButtonActivated.containerColor
-        } else {
-            YouTubeDownloaderTheme.ButtonDeactivated.containerColor
-        },
-        animationSpec = tween(durationMillis = 500),
+        targetValue = currentButtonTheme.containerColor,
+        animationSpec = tween(durationMillis = 300),
         label = "background_color"
     )
 
     val animatedContentColor by animateColorAsState(
-        targetValue = if (buttonTheme == YouTubeDownloaderTheme.ButtonActivated) {
-            YouTubeDownloaderTheme.ButtonActivated.contentColor
-        } else {
-            YouTubeDownloaderTheme.ButtonDeactivated.contentColor
-        },
-        animationSpec = tween(durationMillis = 500),
+        targetValue = currentButtonTheme.contentColor,
+        animationSpec = tween(durationMillis = 300),
         label = "content_color"
     )
 
@@ -72,13 +72,13 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
 
         // Quality and Audio Section
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().offset(4.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Quality Column
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = "Quality",
@@ -97,7 +97,7 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
             // Audio Column
             Column(
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = "Audio",
@@ -105,12 +105,9 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                     color = YouTubeDownloaderTheme.TextSecondary,
                     fontSize = 14.sp
                 )
-                ElevatedButton(
+                Button(
                     onClick = {
-                        buttonTheme = when (buttonTheme) {
-                            YouTubeDownloaderTheme.ButtonDeactivated -> YouTubeDownloaderTheme.ButtonActivated
-                            else -> YouTubeDownloaderTheme.ButtonDeactivated
-                        }
+                        isAudioEnabled = !isAudioEnabled
                     },
                     modifier = Modifier.size(48.dp),
                     shape = YouTubeDownloaderTheme.Shapes.medium,
@@ -120,7 +117,11 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                     ),
                     border = BorderStroke(
                         width = 1.dp,
-                        color = YouTubeDownloaderTheme.BorderDefault
+                        color = if (isAudioEnabled) {
+                            YouTubeDownloaderTheme.RedPrimary
+                        } else {
+                            YouTubeDownloaderTheme.BorderDefault
+                        }
                     ),
                     contentPadding = PaddingValues(0.dp)
                 ) {
@@ -136,7 +137,7 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
 
         // Title Section
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.offset(4.dp).animateContentSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
@@ -156,7 +157,7 @@ fun DownloadOptionsHeader(modifier: Modifier = Modifier) {
                 )
             }
 
-            AnimatedVisibility(visible = isTitleEnabled) {
+            if(isTitleEnabled) {
                 Field(
                     modifier = Modifier.fillMaxWidth(),
                     fieldValue = "",
