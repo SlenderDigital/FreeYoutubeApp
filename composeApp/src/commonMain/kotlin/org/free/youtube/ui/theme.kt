@@ -34,7 +34,7 @@ object YouTubeDownloaderTheme {
     val TextPrimary = Color(0xFFFFFFFF)        // white
     val TextSecondary = Color(0xFF9CA3AF)      // gray-400
     val TextTertiary = Color(0xFFD1D5DB)       // gray-300
-    val TextInverted = Color(0xFF000000)         // black
+    val TextInverted = Color(0xFF000000)       // black
     val TextMuted = Color(0xFF6B7280)          // gray-500
 
     // Status Colors
@@ -103,26 +103,21 @@ object YouTubeDownloaderTheme {
         large = RoundedCornerShape(16.dp)
     )
 
-    // Button Theme
+    // Fixed Button Themes
     val ButtonDeactivated = ButtonColors(
         containerColor = BackgroundTertiary,
-        contentColor = TextPrimary,
+        contentColor = TextSecondary,
         disabledContainerColor = BackgroundTertiary,
         disabledContentColor = TextMuted
     )
 
     val ButtonActivated = ButtonColors(
         containerColor = RedPrimary,
-        contentColor = TextInverted,
-        disabledContentColor = BackgroundTertiary,
-        disabledContainerColor = TextMuted
-
+        contentColor = TextPrimary,
+        disabledContainerColor = BackgroundTertiary,
+        disabledContentColor = TextMuted
     )
-
-
 }
-
-
 
 @Composable
 fun YouTubeDownloaderTheme(
