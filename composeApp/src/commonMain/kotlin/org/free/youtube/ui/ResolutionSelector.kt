@@ -48,7 +48,7 @@ fun ResolutionSelector(
         var resolutionSelected by remember { mutableStateOf("1080p") }
 
         Button(
-            onClick = { expanded = !expanded },
+            onClick = { expanded = true },
             shape = YouTubeDownloaderTheme.Shapes.medium,
             border = BorderStroke(
                 width = 1.dp,
@@ -60,10 +60,9 @@ fun ResolutionSelector(
                 disabledContainerColor = YouTubeDownloaderTheme.BackgroundTertiary,
                 disabledContentColor = YouTubeDownloaderTheme.TextMuted
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp), // Better touch target height
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp) // Better internal padding
+            modifier = modifier
+                .height(48.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -78,21 +77,20 @@ fun ResolutionSelector(
                     contentDescription = "Arrow",
                     modifier = Modifier
                         .rotate(if (expanded) 180f else 0f)
-                        .size(18.dp) // Slightly larger for better visibility
+                        .size(18.dp)
                 )
             }
         }
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }, // Close when clicking outside
+            onDismissRequest = { expanded = false },
             border = BorderStroke(width = 1.dp, color = YouTubeDownloaderTheme.BorderDefault),
             shape = YouTubeDownloaderTheme.Shapes.medium,
             containerColor = YouTubeDownloaderTheme.BackgroundTertiary,
             modifier = Modifier.width(IntrinsicSize.Min),
-            tonalElevation = 8.dp, // Better elevation for depth
-            offset = DpOffset(x = 0.dp, y = 4.dp), // Small offset for better visual separation
-            properties = PopupProperties()
+            tonalElevation = 8.dp,
+            offset = DpOffset(x = 0.dp, y = 4.dp),
         ) {
             content.forEach { resolution ->
                 DropdownMenuItem(
@@ -115,8 +113,8 @@ fun ResolutionSelector(
                         expanded = false
                         resolutionSelected = resolution
                     },
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp), // Better padding
-                    modifier = Modifier.width(80.dp) // Slightly wider for better appearance
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                    modifier = Modifier.width(80.dp)
                 )
             }
         }

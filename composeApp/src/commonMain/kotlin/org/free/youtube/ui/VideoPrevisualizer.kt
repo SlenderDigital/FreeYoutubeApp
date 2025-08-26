@@ -1,6 +1,9 @@
 package org.free.youtube.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -34,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -46,58 +48,83 @@ import org.free.youtube.utils.isYouTubeUrl
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun VideoPrevisualizer(modifier: Modifier) { // Its a preview
+fun VideoPrevisualizer(modifier: Modifier) {
     var ytURL by remember { mutableStateOf("") }
-    val customEnterTransition = scaleIn(initialScale = 0.8f) +
-            expandHorizontally(expandFrom = Alignment.End) +
-            fadeIn(initialAlpha = 0.3f)
 
-    val customExitTransition = scaleOut(targetScale = 0.8f) +
-            shrinkHorizontally(shrinkTowards = Alignment.End) +
-            fadeOut(targetAlpha = 0.3f)
+    // State management for delete button
+    var isDeletePressed by remember { mutableStateOf(false) }
+
+// Determine current theme based on pressed state
+    val currentDeleteTheme = if (isDeletePressed) {
+        YouTubeDownloaderTheme.ButtonActivated
+    } else {
+        YouTubeDownloaderTheme.ButtonDeactivated
+    }
+
+// Animated colors for delete button
+    val animatedDeleteBackgroundColor by animateColorAsState(
+        targetValue = if (isDeletePressed) {
+            YouTubeDownloaderTheme.RedPrimary
+        } else {
+            YouTubeDownloaderTheme.BackgroundTertiary
+        },
+        animationSpec = tween(durationMillis = 300),
+        label = "delete_background_color"
+    )
+
+    val animatedDeleteIconColor by animateColorAsState(
+        targetValue = if (isDeletePressed) {
+            YouTubeDownloaderTheme.TextPrimary
+        } else {
+            YouTubeDownloaderTheme.RedPrimary
+        },
+        animationSpec = tween(durationMillis = 300),
+        label = "delete_icon_color"
+    )
 
     Column(
-        modifier = modifier.padding(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.animateContentSize()
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier
         ) {
-            UrlField(
-                url = ytURL,
-                onYtURLChange = { ytURL = it },
-                modifier = Modifier.weight(1f)
+            Field(
+                fieldValue = ytURL,
+                onFieldChange = { ytURL = it },
+                modifier = Modifier.animateContentSize().weight(1f),
+                placeholder = "Paste YouTube URL here..."
             )
 
-            AnimatedVisibility(
-                visible = ytURL.isNotEmpty(),
-                enter = customEnterTransition,
-                exit = customExitTransition
-            ) {
+            if(ytURL.isNotEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(YouTubeDownloaderTheme.BackgroundTertiary)
-                        .clickable(enabled = true, onClick = { ytURL = "" }),
+                        .background(animatedDeleteBackgroundColor)
+                        .clickable(
+                            enabled = true,
+                            onClick = {
+                                isDeletePressed = true
+                                ytURL=""
+                            }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.trash),
                         contentDescription = "Delete",
                         modifier = Modifier.size(20.dp),
-                        tint = YouTubeDownloaderTheme.RedPrimary
+                        tint = animatedDeleteIconColor
                     )
                 }
             }
         }
 
-        AnimatedVisibility(
-            visible = ytURL.isYouTubeUrl()
-        ) {
+        if(ytURL.isYouTubeUrl()) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
