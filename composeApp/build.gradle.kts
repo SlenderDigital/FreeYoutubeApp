@@ -32,12 +32,15 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            
             // Ktor client dependency required for Coil
             implementation(libs.ktor.client.android)
+            
             // Ktor client dependency required for YouTube-dl Boom
             implementation("io.github.farimarwat:youtubedl-boom:1.0.21")
             implementation("io.github.farimarwat:youtubedl-boom-commons:1.2")
             implementation("com.jakewharton.timber:timber:latest_version") // Replace with the latest Timber version
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)

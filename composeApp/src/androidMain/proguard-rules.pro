@@ -1,0 +1,2 @@
+-keep class com.farimarwat.** { *; }
+-keep class org.apache.commons.compress.archivers.zip.** { *; }
