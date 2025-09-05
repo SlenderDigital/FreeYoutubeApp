@@ -1,6 +1,6 @@
 package org.free.youtube.domain
 
-class VideoInfo(
+data class CommonVideoInfo(
     var title: String?,
     val description: String?,
     val thumbnailUrl: String?,
@@ -8,5 +8,5 @@ class VideoInfo(
     var audio: Boolean = true,
     val duration: Int?, // Duration in seconds
     var resolution: String?, // e.g., "1080p", "720p"
-    val fileSizeAproximate: Long
+    val fileSizeAproximate: Long?
 )
