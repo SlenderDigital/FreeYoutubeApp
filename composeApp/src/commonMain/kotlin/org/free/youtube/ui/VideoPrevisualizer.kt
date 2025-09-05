@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import freeyoutube.composeapp.generated.resources.Res
 import freeyoutube.composeapp.generated.resources.trash
+import org.free.youtube.domain.CommonVideoInfo
+import org.free.youtube.domain.YtVideo
 import org.free.youtube.utils.extractYouTubeVideoId
 import org.free.youtube.utils.isYouTubeUrl
 import org.jetbrains.compose.resources.painterResource
@@ -125,6 +127,9 @@ fun VideoPrevisualizer(modifier: Modifier) {
         }
 
         if(ytURL.isYouTubeUrl()) {
+
+            val videoinfo: CommonVideoInfo? = YtVideo.getVideoInfo(ytURL)
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
