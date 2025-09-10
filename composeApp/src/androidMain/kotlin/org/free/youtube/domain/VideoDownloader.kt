@@ -74,3 +74,5 @@ class YtVideoImpl : YtVideo {
     }
 }
 
+actual fun provideYtVideo(): YtVideo = YtVideoImpl()
+

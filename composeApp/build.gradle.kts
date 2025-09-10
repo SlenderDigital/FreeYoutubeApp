@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
+        alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
@@ -32,6 +32,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            // test
+
+            implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") // Or the latest version
             
             // Ktor client dependency required for Coil
             implementation(libs.ktor.client.android)
@@ -54,6 +59,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            // commonMain timber
+            implementation("co.touchlab:kermit:2.0.4")  // or latest version
 
         }
         iosMain.dependencies {
@@ -61,7 +68,7 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
+
         }
 
         // alternatively jvmMain (maybe later)
@@ -70,6 +77,9 @@ kotlin {
 //            implementation(libs.ktor.client.java)
 //            implementation(libs.kotlinx.coroutines.swing)
 //        }
+    }
+    sourceSets.androidMain.dependencies {
+        implementation(kotlin("test"))
     }
 }
 
