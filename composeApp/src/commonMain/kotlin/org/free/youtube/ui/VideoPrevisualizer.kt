@@ -1,15 +1,8 @@
 package org.free.youtube.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,28 +34,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import coil3.compose.AsyncImage
 import freeyoutube.composeapp.generated.resources.Res
 import freeyoutube.composeapp.generated.resources.trash
 import org.free.youtube.domain.CommonVideoInfo
 import org.free.youtube.domain.YtVideo
+import org.free.youtube.domain.provideYtVideo
 import org.free.youtube.utils.extractYouTubeVideoId
 import org.free.youtube.utils.isYouTubeUrl
 import org.jetbrains.compose.resources.painterResource
 
+private val logger = Logger.withTag("VideoPrevisualizer")
+
 @Composable
 fun VideoPrevisualizer(modifier: Modifier) {
     var ytURL by remember { mutableStateOf("") }
+    val ytVideo = remember { provideYtVideo() }
+
+    var videoInfo by remember { mutableStateOf<CommonVideoInfo?>(null) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // State management for delete button
     var isDeletePressed by remember { mutableStateOf(false) }
-
-// Determine current theme based on pressed state
-    val currentDeleteTheme = if (isDeletePressed) {
-        YouTubeDownloaderTheme.ButtonActivated
-    } else {
-        YouTubeDownloaderTheme.ButtonDeactivated
-    }
 
 // Animated colors for delete button
     val animatedDeleteBackgroundColor by animateColorAsState(
@@ -83,6 +78,26 @@ fun VideoPrevisualizer(modifier: Modifier) {
         animationSpec = tween(durationMillis = 300),
         label = "delete_icon_color"
     )
+
+    LaunchedEffect(ytURL) {
+        logger.d { "LaunchedEffect triggered with URL: $ytURL" }
+        if (ytURL.isNotBlank() && ytURL.isYouTubeUrl()) {
+            try {
+                logger.d { "Fetching video info for URL: $ytURL" }
+                videoInfo = ytVideo.getVideoInfo(ytURL)
+                errorMessage = null
+                logger.d { "Received video title: ${videoInfo?.title}" }
+            } catch (e: Exception) {
+                errorMessage = e.message
+                videoInfo = null
+                logger.e(e) { "Error fetching video info" }
+            }
+        } else {
+            videoInfo = null
+            errorMessage = null
+            logger.d { "Invalid or blank URL, resetting states" }
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -128,8 +143,6 @@ fun VideoPrevisualizer(modifier: Modifier) {
 
         if(ytURL.isYouTubeUrl()) {
 
-            val videoinfo: CommonVideoInfo? = YtVideo.getVideoInfo(ytURL)
-
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,28 +173,17 @@ fun VideoPrevisualizer(modifier: Modifier) {
                         contentScale = ContentScale.Crop
                     )
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1f),
-                        verticalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Text(
-                            text = "9 DaVinci Resolve Tricks You Wish You Knew Sooner!",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = YouTubeDownloaderTheme.TextPrimary,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = MaterialTheme.typography.titleMedium.lineHeight
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = "00:15:11 - 45/206MB",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = YouTubeDownloaderTheme.TextSecondary
-                        )
+                    Column {
+                        // Use videoInfo safely here
+                        if (videoInfo != null) {
+                            Text(text = videoInfo?.title ?: "No title")
+                            Text(text = "Duration: ${videoInfo?.duration ?: 0} seconds")
+                            // etc.
+                        } else if (errorMessage != null) {
+                            Text(text = "Error: $errorMessage")
+                        } else {
+                            Text("Loading...")
+                        }
                     }
                 }
             }
