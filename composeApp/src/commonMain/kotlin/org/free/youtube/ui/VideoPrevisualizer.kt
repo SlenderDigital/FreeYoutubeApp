@@ -182,7 +182,7 @@ fun VideoPrevisualizer(modifier: Modifier) {
                         } else if (errorMessage != null) {
                             Text(text = "Error: $errorMessage")
                         } else {
-                            Text("Loading...")
+                            Text(videoInfo?.title ?: "Loading...")
                         }
                     }
                 }
